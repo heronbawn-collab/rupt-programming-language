@@ -116,7 +116,7 @@ static Value *eval_expr(ASTNode *node, Env *env) {
         case N_IDENT: {
             Value *v = env_get(env, node->sval);
             if (!v) {
-                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"ceil")==0 || strcmp(node->sval,"floor")==0 || strcmp(node->sval,"round")==0 || strcmp(node->sval,"pow")==0 || strcmp(node->sval,"sqrt")==0 || strcmp(node->sval,"exp")==0 || strcmp(node->sval,"log")==0 || strcmp(node->sval,"log10")==0 || strcmp(node->sval,"sin")==0 || strcmp(node->sval,"cos")==0 || strcmp(node->sval,"tan")==0 || strcmp(node->sval,"asin")==0 || strcmp(node->sval,"acos")==0 || strcmp(node->sval,"atan")==0 || strcmp(node->sval,"sinh")==0 || strcmp(node->sval,"cosh")==0 || strcmp(node->sval,"tanh")==0 || strcmp(node->sval,"deg2rad")==0 || strcmp(node->sval,"rad2deg")==0 || strcmp(node->sval,"clamp")==0 || strcmp(node->sval,"map_range")==0 || strcmp(node->sval,"lerp")==0 || strcmp(node->sval,"sign")==0 || strcmp(node->sval,"is_even")==0 || strcmp(node->sval,"is_odd")==0 || strcmp(node->sval,"gcd")==0 || strcmp(node->sval,"lcm")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
+                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"ceil")==0 || strcmp(node->sval,"floor")==0 || strcmp(node->sval,"round")==0 || strcmp(node->sval,"pow")==0 || strcmp(node->sval,"sqrt")==0 || strcmp(node->sval,"exp")==0 || strcmp(node->sval,"log")==0 || strcmp(node->sval,"log10")==0 || strcmp(node->sval,"sin")==0 || strcmp(node->sval,"cos")==0 || strcmp(node->sval,"tan")==0 || strcmp(node->sval,"asin")==0 || strcmp(node->sval,"acos")==0 || strcmp(node->sval,"atan")==0 || strcmp(node->sval,"sinh")==0 || strcmp(node->sval,"cosh")==0 || strcmp(node->sval,"tanh")==0 || strcmp(node->sval,"deg2rad")==0 || strcmp(node->sval,"rad2deg")==0 || strcmp(node->sval,"clamp")==0 || strcmp(node->sval,"map_range")==0 || strcmp(node->sval,"lerp")==0 || strcmp(node->sval,"sign")==0 || strcmp(node->sval,"is_even")==0 || strcmp(node->sval,"is_odd")==0 || strcmp(node->sval,"gcd")==0 || strcmp(node->sval,"min2")==0 || strcmp(node->sval,"max2")==0 || strcmp(node->sval,"chr")==0 || strcmp(node->sval,"ord")==0 || strcmp(node->sval,"hex")==0 || strcmp(node->sval,"oct")==0 || strcmp(node->sval,"bin")==0 || strcmp(node->sval,"divmod")==0 || strcmp(node->sval,"repr")==0 || strcmp(node->sval,"ascii")==0 || strcmp(node->sval,"slice")==0 || strcmp(node->sval,"complex")==0 || strcmp(node->sval,"dict")==0 || strcmp(node->sval,"frozenset")==0 || strcmp(node->sval,"issubclass")==0 || strcmp(node->sval,"isinstance")==0 || strcmp(node->sval,"bytes")==0 || strcmp(node->sval,"bytearray")==0 || strcmp(node->sval,"memoryview")==0 || strcmp(node->sval,"format")==0 || strcmp(node->sval,"type")==0 || strcmp(node->sval,"callable")==0 || strcmp(node->sval,"object")==0 || strcmp(node->sval,"lcm")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
                     return val_null();
                 }
                 fprintf(stderr, "NameError: %s is not defined\n", node->sval);
@@ -642,6 +642,232 @@ static Value *eval_expr(ASTNode *node, Env *env) {
     } else {
         result = val_int(0);
     }
+} else if (strcmp(fname,"min2")==0) {
+    if (argc == 2) {
+        if (args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
+            result = val_int(args[0]->as.integer < args[1]->as.integer ? args[0]->as.integer : args[1]->as.integer);
+        } else if (args[0]->type == VAL_FLOAT || args[1]->type == VAL_FLOAT) {
+            double a = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
+            double b = args[1]->type == VAL_INT ? (double)args[1]->as.integer : args[1]->as.floating;
+            result = val_float(a < b ? a : b);
+        } else {
+            result = val_int(0);
+        }
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"max2")==0) {
+    if (argc == 2) {
+        if (args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
+            result = val_int(args[0]->as.integer > args[1]->as.integer ? args[0]->as.integer : args[1]->as.integer);
+        } else if (args[0]->type == VAL_FLOAT || args[1]->type == VAL_FLOAT) {
+            double a = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
+            double b = args[1]->type == VAL_INT ? (double)args[1]->as.integer : args[1]->as.floating;
+            result = val_float(a > b ? a : b);
+        } else {
+            result = val_int(0);
+        }
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"chr")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) {
+        char c = (char)args[0]->as.integer;
+        char s[2] = {c, 0};
+        result = val_str(s);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"ord")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR && args[0]->as.string[0] != 0) {
+        result = val_int((unsigned char)args[0]->as.string[0]);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"hex")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "0x%llx", args[0]->as.integer);
+        result = val_str(buf);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"oct")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "0%llo", args[0]->as.integer);
+        result = val_str(buf);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"bin")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) {
+        long long v = args[0]->as.integer;
+        if (v == 0) {
+            result = val_str("0b0");
+        } else {
+            if (v < 0) v = -v;
+            char buf[128];
+            int len = 0;
+            while (v > 0) {
+                buf[len++] = (v & 1) ? '1' : '0';
+                v >>= 1;
+            }
+            // reverse
+            for (int i = 0; i < len / 2; i++) {
+                char t = buf[i]; buf[i] = buf[len - 1 - i]; buf[len - 1 - i] = t;
+            }
+            buf[len] = 0;
+            // prepend "0b"
+            char buf2[130];
+            buf2[0] = '0'; buf2[1] = 'b';
+            for (int i = 0; i <= len; i++) buf2[i + 2] = buf[i];
+            result = val_str(buf2);
+        }
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"divmod")==0) {
+    if (argc == 2 && args[0]->type == VAL_INT && args[1]->type == VAL_INT && args[1]->as.integer != 0) {
+        Value *pair = val_list();
+        list_append(pair, val_int(args[0]->as.integer / args[1]->as.integer));
+        list_append(pair, val_int(args[0]->as.integer % args[1]->as.integer));
+        result = pair;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"repr")==0) {
+    if (argc == 1) {
+        result = val_str(val_to_str(args[0]));
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"ascii")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        result = val_str(args[0]->as.string);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"slice")==0) {
+    if (argc >= 2 && args[0]->type == VAL_LIST) {
+        Value *sub = val_list();
+        long long start = 0, stop = args[0]->as.list.count, step = 1;
+        if (argc >= 2 && args[1]->type == VAL_INT) start = args[1]->as.integer;
+        if (argc >= 3 && args[2]->type == VAL_INT) stop = args[2]->as.integer;
+        if (argc >= 4 && args[3]->type == VAL_INT) step = args[3]->as.integer;
+        if (start < 0) start = args[0]->as.list.count + start;
+        if (stop < 0) stop = args[0]->as.list.count + stop;
+        if (step > 0) {
+            for (long long i = start; i < stop; i += step) {
+                if (i >= 0 && i < args[0]->as.list.count) list_append(sub, args[0]->as.list.items[i]);
+            }
+        } else if (step < 0) {
+            for (long long i = start; i > stop; i += step) {
+                if (i >= 0 && i < args[0]->as.list.count) list_append(sub, args[0]->as.list.items[i]);
+            }
+        }
+        result = sub;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"complex")==0) {
+    if (argc == 2 && args[0]->type == VAL_FLOAT && args[1]->type == VAL_FLOAT) {
+        Value *pair = val_list();
+        list_append(pair, val_float(args[0]->as.floating));
+        list_append(pair, val_float(args[1]->as.floating));
+        result = pair;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"dict")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        Value *m = val_map();
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            Value *pair = args[0]->as.list.items[i];
+            if (pair->type == VAL_LIST && pair->as.list.count >= 2) {
+                map_set(m, val_to_str(pair->as.list.items[0]), pair->as.list.items[1]);
+            }
+        }
+        result = m;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"frozenset")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        Value *s = val_map();
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            map_set(s, val_to_str(args[0]->as.list.items[i]), args[0]->as.list.items[i]);
+        }
+        result = s;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"issubclass")==0) {
+    result = val_bool(0);
+} else if (strcmp(fname,"isinstance")==0) {
+    result = val_bool(0);
+} else if (strcmp(fname,"bytes")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        Value *b = val_list();
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            if (args[0]->as.list.items[i]->type == VAL_INT) {
+                list_append(b, val_int(args[0]->as.list.items[i]->as.integer & 0xFF));
+            }
+        }
+        result = b;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"bytearray")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        Value *b = val_list();
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            if (args[0]->as.list.items[i]->type == VAL_INT) {
+                list_append(b, val_int(args[0]->as.list.items[i]->as.integer & 0xFF));
+            }
+        }
+        result = b;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"memoryview")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        result = val_retain(args[0]);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"format")==0) {
+    if (argc >= 1 && args[0]->type == VAL_STR) {
+        result = val_str(args[0]->as.string);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"type")==0) {
+    if (argc == 1) {
+        const char *tname;
+        switch (args[0]->type) {
+            case VAL_INT: tname = "int"; break;
+            case VAL_FLOAT: tname = "float"; break;
+            case VAL_STR: tname = "str"; break;
+            case VAL_BOOL: tname = "bool"; break;
+            case VAL_LIST: tname = "list"; break;
+            case VAL_MAP: tname = "dict"; break;
+            case VAL_SET: tname = "set"; break;
+            case VAL_FUNC: tname = "function"; break;
+            case VAL_CLASS: tname = "class"; break;
+            case VAL_INSTANCE: tname = "instance"; break;
+            case VAL_NONE: tname = "None"; break;
+            default: tname = "unknown"; break;
+        }
+        result = val_str(tname);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"callable")==0) {
+    if (argc == 1 && args[0]->type == VAL_FUNC) result = val_bool(1);
+    else result = val_bool(0);
+} else if (strcmp(fname,"object")==0) {
+    result = val_null();
 } else if (strcmp(fname,"gfx_init")==0) {
     if (argc >= 2 && args[0]->type == VAL_INT && args[1]->type == VAL_INT) gfx_alloc((int)args[0]->as.integer, (int)args[1]->as.integer);
     result = val_null();
