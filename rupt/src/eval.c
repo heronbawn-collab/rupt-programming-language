@@ -116,7 +116,7 @@ static Value *eval_expr(ASTNode *node, Env *env) {
         case N_IDENT: {
             Value *v = env_get(env, node->sval);
             if (!v) {
-                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
+                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"ceil")==0 || strcmp(node->sval,"floor")==0 || strcmp(node->sval,"round")==0 || strcmp(node->sval,"pow")==0 || strcmp(node->sval,"sqrt")==0 || strcmp(node->sval,"exp")==0 || strcmp(node->sval,"log")==0 || strcmp(node->sval,"log10")==0 || strcmp(node->sval,"sin")==0 || strcmp(node->sval,"cos")==0 || strcmp(node->sval,"tan")==0 || strcmp(node->sval,"asin")==0 || strcmp(node->sval,"acos")==0 || strcmp(node->sval,"atan")==0 || strcmp(node->sval,"sinh")==0 || strcmp(node->sval,"cosh")==0 || strcmp(node->sval,"tanh")==0 || strcmp(node->sval,"deg2rad")==0 || strcmp(node->sval,"rad2deg")==0 || strcmp(node->sval,"clamp")==0 || strcmp(node->sval,"map_range")==0 || strcmp(node->sval,"lerp")==0 || strcmp(node->sval,"sign")==0 || strcmp(node->sval,"is_even")==0 || strcmp(node->sval,"is_odd")==0 || strcmp(node->sval,"gcd")==0 || strcmp(node->sval,"lcm")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
                     return val_null();
                 }
                 fprintf(stderr, "NameError: %s is not defined\n", node->sval);
@@ -490,6 +490,155 @@ static Value *eval_expr(ASTNode *node, Env *env) {
         if (args[0]->type == VAL_INT) result = val_int(args[0]->as.integer < 0 ? -args[0]->as.integer : args[0]->as.integer);
         else if (args[0]->type == VAL_FLOAT) result = val_float(args[0]->as.floating < 0 ? -args[0]->as.floating : args[0]->as.floating);
         else result = val_int(0);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"ceil")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_int((long long)ceil(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int(args[0]->as.integer);
+    else result = val_int(0);
+} else if (strcmp(fname,"floor")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_int((long long)floor(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int(args[0]->as.integer);
+    else result = val_int(0);
+} else if (strcmp(fname,"round")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_int((long long)round(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int(args[0]->as.integer);
+    else result = val_int(0);
+} else if (strcmp(fname,"pow")==0) {
+    if (argc == 2 && args[0]->type == VAL_FLOAT && args[1]->type == VAL_FLOAT) result = val_float(pow(args[0]->as.floating, args[1]->as.floating));
+    else if (argc == 2 && args[0]->type == VAL_INT && args[1]->type == VAL_INT) result = val_int((long long)pow((double)args[0]->as.integer, (double)args[1]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"sqrt")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(sqrt(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int((long long)sqrt((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"exp")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(exp(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int((long long)exp((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"log")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(log(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int((long long)log((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"log10")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(log10(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_int((long long)log10((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"sin")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(sin(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(sin((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"cos")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(cos(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(cos((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"tan")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(tan(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(tan((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"asin")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(asin(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(asin((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"acos")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(acos(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(acos((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"atan")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(atan(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(atan((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"sinh")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(sinh(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(sinh((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"cosh")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(cosh(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(cosh((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"tanh")==0) {
+    if (argc == 1 && args[0]->type == VAL_FLOAT) result = val_float(tanh(args[0]->as.floating));
+    else if (argc == 1 && args[0]->type == VAL_INT) result = val_float(tanh((double)args[0]->as.integer));
+    else result = val_int(0);
+} else if (strcmp(fname,"deg2rad")==0) {
+    if (argc == 1) {
+        double v = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
+        result = val_float(v * 3.14159265358979323846 / 180.0);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"rad2deg")==0) {
+    if (argc == 1) {
+        double v = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
+        result = val_float(v * 180.0 / 3.14159265358979323846);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"clamp")==0) {
+    if (argc == 3 && args[0]->type == VAL_INT && args[1]->type == VAL_INT && args[2]->type == VAL_INT) {
+        long long v = args[0]->as.integer, lo = args[1]->as.integer, hi = args[2]->as.integer;
+        if (v < lo) v = lo; if (v > hi) v = hi;
+        result = val_int(v);
+    } else if (argc == 3 && args[0]->type == VAL_FLOAT && args[1]->type == VAL_FLOAT && args[2]->type == VAL_FLOAT) {
+        double v = args[0]->as.floating, lo = args[1]->as.floating, hi = args[2]->as.floating;
+        if (v < lo) v = lo; if (v > hi) v = hi;
+        result = val_float(v);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"map_range")==0) {
+    if (argc == 5 && args[0]->type == VAL_FLOAT && args[1]->type == VAL_FLOAT && args[2]->type == VAL_FLOAT && args[3]->type == VAL_FLOAT && args[4]->type == VAL_FLOAT) {
+        double v = args[0]->as.floating, in_min = args[1]->as.floating, in_max = args[2]->as.floating, out_min = args[3]->as.floating, out_max = args[4]->as.floating;
+        result = val_float((v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+    } else if (argc == 5 && args[0]->type == VAL_INT && args[1]->type == VAL_INT && args[2]->type == VAL_INT && args[3]->type == VAL_INT && args[4]->type == VAL_INT) {
+        long long v = args[0]->as.integer, in_min = args[1]->as.integer, in_max = args[2]->as.integer, out_min = args[3]->as.integer, out_max = args[4]->as.integer;
+        result = val_int((v - in_min) * (out_max - out_min) / (in_max - in_min) + out_min);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"lerp")==0) {
+    if (argc == 3 && args[0]->type == VAL_FLOAT && args[1]->type == VAL_FLOAT && args[2]->type == VAL_FLOAT) {
+        double a = args[0]->as.floating, b = args[1]->as.floating, t = args[2]->as.floating;
+        result = val_float(a + (b - a) * t);
+    } else if (argc == 3 && args[0]->type == VAL_INT && args[1]->type == VAL_INT && args[2]->type == VAL_FLOAT) {
+        long long a = args[0]->as.integer, b = args[1]->as.integer;
+        double t = args[2]->as.floating;
+        result = val_int(a + (long long)((double)(b - a) * t));
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"sign")==0) {
+    if (argc == 1) {
+        if (args[0]->type == VAL_INT) result = val_int(args[0]->as.integer > 0 ? 1 : (args[0]->as.integer < 0 ? -1 : 0));
+        else if (args[0]->type == VAL_FLOAT) result = val_int(args[0]->as.floating > 0 ? 1 : (args[0]->as.floating < 0 ? -1 : 0));
+        else result = val_int(0);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"is_even")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) result = val_bool((args[0]->as.integer % 2) == 0);
+    else result = val_bool(0);
+} else if (strcmp(fname,"is_odd")==0) {
+    if (argc == 1 && args[0]->type == VAL_INT) result = val_bool((args[0]->as.integer % 2) != 0);
+    else result = val_bool(0);
+} else if (strcmp(fname,"gcd")==0) {
+    if (argc == 2 && args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
+        long long a = args[0]->as.integer < 0 ? -args[0]->as.integer : args[0]->as.integer;
+        long long b = args[1]->as.integer < 0 ? -args[1]->as.integer : args[1]->as.integer;
+        while (b != 0) { long long t = b; b = a % b; a = t; }
+        result = val_int(a);
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"lcm")==0) {
+    if (argc == 2 && args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
+        long long a = args[0]->as.integer < 0 ? -args[0]->as.integer : args[0]->as.integer;
+        long long b = args[1]->as.integer < 0 ? -args[1]->as.integer : args[1]->as.integer;
+        long long g = a;
+        long long h = b;
+        while (h != 0) { long long t = h; h = g % h; g = t; }
+        result = val_int(a / g * b);
     } else {
         result = val_int(0);
     }

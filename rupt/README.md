@@ -83,7 +83,7 @@ class User:
   - замыкания, рекурсия, lambda
   - visible(...) — вывод (как print).
   - toilet() — полная остановка программы.
-  - встроенные: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play
+  - встроенные: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm
 
 ### Коллекции
 
@@ -243,7 +243,7 @@ class User:
   - closures, recursion, lambda
   - visible(...) — output (like print).
   - toilet() — full program stop.
-  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play
+  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play
 
 ### Collections
 
