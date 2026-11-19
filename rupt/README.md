@@ -119,9 +119,7 @@ from math import sqrt
 - `gfx_save("file.ppm")` — сохранить холст в PPM.
 - `gfx_close()` — освободить холст.
 - `sound_beep(freq, ms)` — звуковой сигнал.
-- `sound_play("file")` — проигролвть звук (через Beep).
-
-### Веб и сеть
+- `kill(pid)` — полная остановка процесса по PID (возвращает true/false).
 
 - `http_get(url)` — GET запрос, возвращает {status, body}.
 - `http_post(url, data)` — POST запрос с телом.
@@ -269,7 +267,7 @@ class User:
   - closures, recursion, lambda
   - visible(...) — output (like print).
   - toilet() — full program stop.
-  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm, min2, max2, chr, ord, hex, oct, bin, divmod, repr, ascii, slice, complex, dict, frozenset, issubclass, isinstance, bytes, bytearray, memoryview, format, type, callable, object, http_get, http_post, http_post_json, json_parse, json_stringify, url_encode, url_decode, html_escape, html_unescape, base64_encode, base64_decode, uuid, md5, sha1, sha256, url_parse, html_strip_tags, base64url_encode, base64url_decode, hmac_sha256, pbkdf2, jwt_encode, jwt_decode
+  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm, min2, max2, chr, ord, hex, oct, bin, divmod, repr, ascii, slice, complex, dict, frozenset, issubclass, isinstance, bytes, bytearray, memoryview, format, type, callable, object, http_get, http_post, http_post_json, json_parse, json_stringify, url_encode, url_decode, html_escape, html_unescape, base64_encode, base64_decode, uuid, md5, sha1, sha256, url_parse, html_strip_tags, base64url_encode, base64url_decode, hmac_sha256, pbkdf2, jwt_encode, jwt_decode, kill
 
 ### Collections
 
@@ -340,6 +338,10 @@ Modules: math, os, json, random, time, path, sys, string, collections, regex, da
 - `file_append(path, text)` — append to file.
 - `file_delete(path)` — delete file.
 - `file_exists(path)` — check if file exists.
+
+### Process
+
+- `kill(pid)` — terminate process by PID, returns true/false.
 
 ### Bricks (Packages)
 
