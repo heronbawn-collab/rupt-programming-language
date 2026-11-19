@@ -22,7 +22,7 @@ Modern programming language with its own interpreter, bytecode, and **Bricks** p
 - Стандартная библиотека: math, os, json, random, time, path, sys, string и др.
 - Асинхронность `async fn` / `await`
 - Обработка ошибок с расшифровкой (type, message, location, suggestions)
-- **Графика:** `gfx_init`, `gfx_color("#RRGGBB")`, `gfx_pixel`, `gfx_line`, `gfx_rect`, `gfx_circle`, `gfx_fill_rect`, `gfx_fill_circle`, `gfx_show`, `gfx_save`, `gfx_close`
+- **Графика:** `gfx_init`, `gfx_color("#RRGGBB")`, `gfx_pixel`, `gfx_line`, `gfx_rect`, `gfx_circle`, `gfx_fill_rect`, `gfx_fill_circle`, `gfx_show`, `gfx_save`, `gfx_close`, `cit`
 - Формат скомпилированного байткода `.rbc`
 - Форматер, линтер, тесты, профилировщик, отладчик (раздел инструментов)
 
@@ -120,7 +120,7 @@ Rupt развивается благодаря контрибьюторам. Л�
 - Standard library: math, os, json, random, time, path, sys, string, and more
 - Async `async fn` / `await`
 - Professional error output (type, message, source location, suggestions)
-- **Graphics:** `gfx_init`, `gfx_color("#RRGGBB")`, `gfx_pixel`, `gfx_line`, `gfx_rect`, `gfx_circle`, `gfx_fill_rect`, `gfx_fill_circle`, `gfx_show`, `gfx_save`, `gfx_close`
+- **Graphics:** `gfx_init`, `gfx_color("#RRGGBB")`, `gfx_pixel`, `gfx_line`, `gfx_rect`, `gfx_circle`, `gfx_fill_rect`, `gfx_fill_circle`, `gfx_show`, `gfx_save`, `gfx_close`, `cit`
 - Compiled bytecode format `.rbc`
 - Formatter, linter, tests, profiler, debugger
 
