@@ -1,6 +1,0 @@
-[project]
-name = "utils"
-version = "1.0.0"
-
-fn hello():
-    print("Hello from utils brick")

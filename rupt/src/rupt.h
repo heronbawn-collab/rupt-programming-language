@@ -6,7 +6,7 @@
 #include <stdarg.h>
 #include <math.h>
 
-typedef enum { VAL_NULL, VAL_BOOL, VAL_INT, VAL_FLOAT, VAL_STR, VAL_LIST, VAL_MAP, VAL_FUNC, VAL_CLASS, VAL_INSTANCE, VAL_MODULE, VAL_RANGE } ValType;
+typedef enum { VAL_NULL, VAL_BOOL, VAL_INT, VAL_FLOAT, VAL_STR, VAL_LIST, VAL_SET, VAL_NONE, VAL_MAP, VAL_FUNC, VAL_CLASS, VAL_INSTANCE, VAL_MODULE, VAL_RANGE } ValType;
 
 typedef struct ASTNode ASTNode;
 

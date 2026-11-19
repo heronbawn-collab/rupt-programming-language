@@ -1,6 +1,0 @@
-fn now():
-    return time_now()
-
-fn sleep(ms):
-    sleep_ms(ms)
-    return true

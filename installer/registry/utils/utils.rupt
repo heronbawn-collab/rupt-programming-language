@@ -1,2 +1,0 @@
-fn hello():
-    print("Hello from utils brick")
