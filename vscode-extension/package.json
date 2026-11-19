@@ -18,8 +18,7 @@
         "id": "rupt",
         "aliases": ["Rupt", "rupt"],
         "extensions": [".rupt"],
-        "configuration": "./language-configuration.json",
-        "icon": "file"
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
@@ -33,6 +32,23 @@
       {
         "language": "rupt",
         "path": "./snippets/rupt.code-snippets"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Rupt",
+        "uiTheme": "vs-dark",
+        "path": "./themes/rupt-dark-color-theme.json"
+      },
+      {
+        "label": "Rupt Hacker",
+        "uiTheme": "vs-dark",
+        "path": "./themes/rupt-hacker-color-theme.json"
+      },
+      {
+        "label": "Rupt Very Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/rupt-very-dark-color-theme.json"
       }
     ]
   },

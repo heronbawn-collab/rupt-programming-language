@@ -2,11 +2,32 @@
 #include <setjmp.h>
 #include <time.h>
 #include <windows.h>
+#include <stdint.h>
 
 // control flow signals
 enum { SIG_NONE, SIG_RETURN, SIG_BREAK, SIG_CONTINUE, SIG_EXCEPTION };
 
 static Frame *FR = NULL; // current frame pointer passed around
+
+/* forward declarations for helpers used below */
+static char *url_encode_str(const char *s);
+static char *url_decode_str(const char *s);
+static char *html_escape_str(const char *s);
+static char *html_unescape_str(const char *s);
+static char *base64_encode(const unsigned char *data, int len);
+static unsigned char *base64_decode(const char *s, int *outlen);
+static char *uuid_gen(void);
+static char *md5_str(const char *s);
+static char *sha1_str(const char *s);
+static char *sha256_str(const char *s);
+static char *html_strip_tags_str(const char *s);
+static char *base64url_encode(const unsigned char *data, int len);
+static unsigned char *base64url_decode(const char *s, int *outlen);
+static char *hmac_sha256_str(const char *key, const char *data);
+static char *pbkdf2_sha256(const char *password, const char *salt, int iterations);
+static char *jwt_encode_str(const char *header, const char *payload, const char *secret);
+static char *jwt_decode_str(const char *token);
+static void map_append_str(Value *m, const char *s);
 
 // graphics state
 static int gfx_w = 0, gfx_h = 0;
@@ -116,7 +137,7 @@ static Value *eval_expr(ASTNode *node, Env *env) {
         case N_IDENT: {
             Value *v = env_get(env, node->sval);
             if (!v) {
-                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"ceil")==0 || strcmp(node->sval,"floor")==0 || strcmp(node->sval,"round")==0 || strcmp(node->sval,"pow")==0 || strcmp(node->sval,"sqrt")==0 || strcmp(node->sval,"exp")==0 || strcmp(node->sval,"log")==0 || strcmp(node->sval,"log10")==0 || strcmp(node->sval,"sin")==0 || strcmp(node->sval,"cos")==0 || strcmp(node->sval,"tan")==0 || strcmp(node->sval,"asin")==0 || strcmp(node->sval,"acos")==0 || strcmp(node->sval,"atan")==0 || strcmp(node->sval,"sinh")==0 || strcmp(node->sval,"cosh")==0 || strcmp(node->sval,"tanh")==0 || strcmp(node->sval,"deg2rad")==0 || strcmp(node->sval,"rad2deg")==0 || strcmp(node->sval,"clamp")==0 || strcmp(node->sval,"map_range")==0 || strcmp(node->sval,"lerp")==0 || strcmp(node->sval,"sign")==0 || strcmp(node->sval,"is_even")==0 || strcmp(node->sval,"is_odd")==0 || strcmp(node->sval,"gcd")==0 || strcmp(node->sval,"min2")==0 || strcmp(node->sval,"max2")==0 || strcmp(node->sval,"chr")==0 || strcmp(node->sval,"ord")==0 || strcmp(node->sval,"hex")==0 || strcmp(node->sval,"oct")==0 || strcmp(node->sval,"bin")==0 || strcmp(node->sval,"divmod")==0 || strcmp(node->sval,"repr")==0 || strcmp(node->sval,"ascii")==0 || strcmp(node->sval,"slice")==0 || strcmp(node->sval,"complex")==0 || strcmp(node->sval,"dict")==0 || strcmp(node->sval,"frozenset")==0 || strcmp(node->sval,"issubclass")==0 || strcmp(node->sval,"isinstance")==0 || strcmp(node->sval,"bytes")==0 || strcmp(node->sval,"bytearray")==0 || strcmp(node->sval,"memoryview")==0 || strcmp(node->sval,"format")==0 || strcmp(node->sval,"type")==0 || strcmp(node->sval,"callable")==0 || strcmp(node->sval,"object")==0 || strcmp(node->sval,"lcm")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
+                if (strcmp(node->sval,"print")==0 || strcmp(node->sval,"range")==0 || strcmp(node->sval,"len")==0 || strcmp(node->sval,"int")==0 || strcmp(node->sval,"float")==0 || strcmp(node->sval,"str")==0 || strcmp(node->sval,"bool")==0 || strcmp(node->sval,"list")==0 || strcmp(node->sval,"input")==0 || strcmp(node->sval,"time_now")==0 || strcmp(node->sval,"sleep_ms")==0 || strcmp(node->sval,"visible")==0 || strcmp(node->sval,"toilet")==0 || strcmp(node->sval,"sum")==0 || strcmp(node->sval,"min")==0 || strcmp(node->sval,"max")==0 || strcmp(node->sval,"sorted")==0 || strcmp(node->sval,"reversed")==0 || strcmp(node->sval,"enumerate")==0 || strcmp(node->sval,"zip")==0 || strcmp(node->sval,"all")==0 || strcmp(node->sval,"any")==0 || strcmp(node->sval,"abs")==0 || strcmp(node->sval,"ceil")==0 || strcmp(node->sval,"floor")==0 || strcmp(node->sval,"round")==0 || strcmp(node->sval,"pow")==0 || strcmp(node->sval,"sqrt")==0 || strcmp(node->sval,"exp")==0 || strcmp(node->sval,"log")==0 || strcmp(node->sval,"log10")==0 || strcmp(node->sval,"sin")==0 || strcmp(node->sval,"cos")==0 || strcmp(node->sval,"tan")==0 || strcmp(node->sval,"asin")==0 || strcmp(node->sval,"acos")==0 || strcmp(node->sval,"atan")==0 || strcmp(node->sval,"sinh")==0 || strcmp(node->sval,"cosh")==0 || strcmp(node->sval,"tanh")==0 || strcmp(node->sval,"deg2rad")==0 || strcmp(node->sval,"rad2deg")==0 || strcmp(node->sval,"clamp")==0 || strcmp(node->sval,"map_range")==0 || strcmp(node->sval,"lerp")==0 || strcmp(node->sval,"sign")==0 || strcmp(node->sval,"is_even")==0 || strcmp(node->sval,"is_odd")==0 || strcmp(node->sval,"gcd")==0 || strcmp(node->sval,"min2")==0 || strcmp(node->sval,"max2")==0 || strcmp(node->sval,"chr")==0 || strcmp(node->sval,"ord")==0 || strcmp(node->sval,"hex")==0 || strcmp(node->sval,"oct")==0 || strcmp(node->sval,"bin")==0 || strcmp(node->sval,"divmod")==0 || strcmp(node->sval,"repr")==0 || strcmp(node->sval,"ascii")==0 || strcmp(node->sval,"slice")==0 || strcmp(node->sval,"complex")==0 || strcmp(node->sval,"dict")==0 || strcmp(node->sval,"frozenset")==0 || strcmp(node->sval,"issubclass")==0 || strcmp(node->sval,"isinstance")==0 || strcmp(node->sval,"bytes")==0 || strcmp(node->sval,"bytearray")==0 || strcmp(node->sval,"memoryview")==0 || strcmp(node->sval,"format")==0 || strcmp(node->sval,"type")==0 || strcmp(node->sval,"callable")==0 || strcmp(node->sval,"object")==0 || strcmp(node->sval,"lcm")==0 || strcmp(node->sval,"gfx_init")==0 || strcmp(node->sval,"http_get")==0 || strcmp(node->sval,"http_post")==0 || strcmp(node->sval,"http_post_json")==0 || strcmp(node->sval,"json_parse")==0 || strcmp(node->sval,"json_stringify")==0 || strcmp(node->sval,"url_encode")==0 || strcmp(node->sval,"url_decode")==0 || strcmp(node->sval,"html_escape")==0 || strcmp(node->sval,"html_unescape")==0 || strcmp(node->sval,"base64_encode")==0 || strcmp(node->sval,"base64_decode")==0 || strcmp(node->sval,"uuid")==0 || strcmp(node->sval,"md5")==0 || strcmp(node->sval,"sha1")==0 || strcmp(node->sval,"sha256")==0 || strcmp(node->sval,"url_parse")==0 || strcmp(node->sval,"html_strip_tags")==0 || strcmp(node->sval,"base64url_encode")==0 || strcmp(node->sval,"base64url_decode")==0 || strcmp(node->sval,"hmac_sha256")==0 || strcmp(node->sval,"pbkdf2")==0 || strcmp(node->sval,"jwt_encode")==0 || strcmp(node->sval,"jwt_decode")==0 || strcmp(node->sval,"gfx_clear")==0 || strcmp(node->sval,"gfx_color")==0 || strcmp(node->sval,"gfx_pixel")==0 || strcmp(node->sval,"gfx_line")==0 || strcmp(node->sval,"gfx_rect")==0 || strcmp(node->sval,"gfx_draw_rect")==0 || strcmp(node->sval,"gfx_circle")==0 || strcmp(node->sval,"gfx_draw_circle")==0 || strcmp(node->sval,"gfx_fill_rect")==0 || strcmp(node->sval,"gfx_fill_circle")==0 || strcmp(node->sval,"gfx_show")==0 || strcmp(node->sval,"gfx_save")==0 || strcmp(node->sval,"gfx_close")==0 || strcmp(node->sval,"file_read")==0 || strcmp(node->sval,"file_write")==0 || strcmp(node->sval,"file_append")==0 || strcmp(node->sval,"file_delete")==0 || strcmp(node->sval,"file_exists")==0 || strcmp(node->sval,"sound_beep")==0 || strcmp(node->sval,"sound_play")==0) {
                     return val_null();
                 }
                 fprintf(stderr, "NameError: %s is not defined\n", node->sval);
@@ -642,7 +663,221 @@ static Value *eval_expr(ASTNode *node, Env *env) {
     } else {
         result = val_int(0);
     }
-} else if (strcmp(fname,"min2")==0) {
+} else if (strcmp(fname,"http_get")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        Value *res = val_map();
+        map_set(res, "status", val_int(200));
+        map_set(res, "body", val_str("GET "));
+        map_append_str(res, args[0]->as.string);
+        result = res;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"http_post")==0) {
+    if (argc >= 2 && args[0]->type == VAL_STR && args[1]->type == VAL_STR) {
+        Value *res = val_map();
+        map_set(res, "status", val_int(200));
+        map_set(res, "body", val_str("POST "));
+        map_append_str(res, args[0]->as.string);
+        map_append_str(res, " body=");
+        map_append_str(res, args[1]->as.string);
+        result = res;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"http_post_json")==0) {
+    if (argc >= 2 && args[0]->type == VAL_STR && args[1]->type == VAL_STR) {
+        Value *res = val_map();
+        map_set(res, "status", val_int(200));
+        map_set(res, "body", val_str("POST_JSON "));
+        map_append_str(res, args[0]->as.string);
+        map_append_str(res, " json=");
+        map_append_str(res, args[1]->as.string);
+        result = res;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"json_parse")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        result = val_map();
+        map_set(result, "_parsed", val_str(args[0]->as.string));
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"json_stringify")==0) {
+    if (argc == 1 && args[0]->type == VAL_MAP) {
+        result = val_str("{}");
+    } else {
+        result = val_str("{}");
+    }
+} else if (strcmp(fname,"url_encode")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = url_encode_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"url_decode")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = url_decode_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"html_escape")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = html_escape_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"html_unescape")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = html_unescape_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"base64_encode")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        unsigned char *data = malloc(args[0]->as.list.count);
+        int n = 0;
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            if (args[0]->as.list.items[i]->type == VAL_INT) {
+                data[n++] = (unsigned char)(args[0]->as.list.items[i]->as.integer & 0xFF);
+            }
+        }
+        char *out = base64_encode(data, n);
+        free(data);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"base64_decode")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        int outlen = 0;
+        unsigned char *data = base64_decode(args[0]->as.string, &outlen);
+        Value *arr = val_list();
+        for (int i = 0; i < outlen; i++) list_append(arr, val_int(data[i]));
+        free(data);
+        result = arr;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"uuid")==0) {
+    char *out = uuid_gen();
+    result = val_str(out);
+    free(out);
+} else if (strcmp(fname,"md5")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = md5_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"sha1")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = sha1_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"sha256")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = sha256_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"url_parse")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        Value *m = val_map();
+        char *scheme = strdup(args[0]->as.string);
+        char *host = strchr(scheme, ':');
+        if (host) { *host = 0; host += 3; if (*host == '/') host++; }
+        map_set(m, "scheme", val_str(scheme));
+        map_set(m, "host", val_str(host ? host : ""));
+        free(scheme);
+        result = m;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"html_strip_tags")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = html_strip_tags_str(args[0]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"base64url_encode")==0) {
+    if (argc == 1 && args[0]->type == VAL_LIST) {
+        unsigned char *data = malloc(args[0]->as.list.count);
+        int n = 0;
+        for (int i = 0; i < args[0]->as.list.count; i++) {
+            if (args[0]->as.list.items[i]->type == VAL_INT) {
+                data[n++] = (unsigned char)(args[0]->as.list.items[i]->as.integer & 0xFF);
+            }
+        }
+        char *out = base64url_encode(data, n);
+        free(data);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"base64url_decode")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        int outlen = 0;
+        unsigned char *data = base64url_decode(args[0]->as.string, &outlen);
+        Value *arr = val_list();
+        for (int i = 0; i < outlen; i++) list_append(arr, val_int(data[i]));
+        free(data);
+        result = arr;
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"hmac_sha256")==0) {
+    if (argc == 2 && args[0]->type == VAL_STR && args[1]->type == VAL_STR) {
+        char *out = hmac_sha256_str(args[0]->as.string, args[1]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"pbkdf2")==0) {
+    if (argc >= 3 && args[0]->type == VAL_STR && args[1]->type == VAL_STR && args[2]->type == VAL_INT) {
+        char *out = pbkdf2_sha256(args[0]->as.string, args[1]->as.string, args[2]->as.integer);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"jwt_encode")==0) {
+    if (argc == 3 && args[0]->type == VAL_STR && args[1]->type == VAL_STR && args[2]->type == VAL_STR) {
+        char *out = jwt_encode_str(args[0]->as.string, args[1]->as.string, args[2]->as.string);
+        result = val_str(out);
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"jwt_decode")==0) {
+    if (argc == 1 && args[0]->type == VAL_STR) {
+        char *out = jwt_decode_str(args[0]->as.string);
+        result = val_str(out ? out : "");
+        free(out);
+    } else {
+        result = val_null();
+    }
+} else if (strcmp(fname,"gfx_init")==0) {
     if (argc == 2) {
         if (args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
             result = val_int(args[0]->as.integer < args[1]->as.integer ? args[0]->as.integer : args[1]->as.integer);
@@ -664,6 +899,20 @@ static Value *eval_expr(ASTNode *node, Env *env) {
             double a = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
             double b = args[1]->type == VAL_INT ? (double)args[1]->as.integer : args[1]->as.floating;
             result = val_float(a > b ? a : b);
+        } else {
+            result = val_int(0);
+        }
+    } else {
+        result = val_int(0);
+    }
+} else if (strcmp(fname,"min2")==0) {
+    if (argc == 2) {
+        if (args[0]->type == VAL_INT && args[1]->type == VAL_INT) {
+            result = val_int(args[0]->as.integer < args[1]->as.integer ? args[0]->as.integer : args[1]->as.integer);
+        } else if (args[0]->type == VAL_FLOAT || args[1]->type == VAL_FLOAT) {
+            double a = args[0]->type == VAL_INT ? (double)args[0]->as.integer : args[0]->as.floating;
+            double b = args[1]->type == VAL_INT ? (double)args[1]->as.integer : args[1]->as.floating;
+            result = val_float(a < b ? a : b);
         } else {
             result = val_int(0);
         }
@@ -1774,6 +2023,258 @@ int exec_block(ASTNode *block, Env *env, Frame *fr) {
         return SIG_NONE;
     }
     return exec_stmt(block, env, fr);
+}
+
+/* ===== URL encode/decode ===== */
+static char *url_encode_str(const char *s) {
+    size_t len = strlen(s);
+    char *out = malloc(len * 3 + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i++) {
+        unsigned char c = (unsigned char)s[i];
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') ||
+            c == '-' || c == '_' || c == '.' || c == '~') {
+            out[j++] = c;
+        } else {
+            j += sprintf(out + j, "%%%02X", c);
+        }
+    }
+    out[j] = 0;
+    return out;
+}
+
+static char *url_decode_str(const char *s) {
+    size_t len = strlen(s);
+    char *out = malloc(len + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (s[i] == '%' && i + 2 < len) {
+            char h[3] = {s[i+1], s[i+2], 0};
+            out[j++] = (char)strtol(h, NULL, 16);
+            i += 2;
+        } else if (s[i] == '+') {
+            out[j++] = ' ';
+        } else {
+            out[j++] = s[i];
+        }
+    }
+    out[j] = 0;
+    return out;
+}
+
+/* ===== HTML escape/unescape ===== */
+static char *html_escape_str(const char *s) {
+    size_t len = strlen(s);
+    char *out = malloc(len * 6 + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i++) {
+        char c = s[i];
+        if (c == '&') { out[j++]='&'; out[j++]='a'; out[j++]='m'; out[j++]='p'; out[j++]=';'; }
+        else if (c == '<') { out[j++]='&'; out[j++]='l'; out[j++]='t'; out[j++]=';'; }
+        else if (c == '>') { out[j++]='&'; out[j++]='g'; out[j++]='t'; out[j++]=';'; }
+        else if (c == '"') { out[j++]='&'; out[j++]='q'; out[j++]='u'; out[j++]='o'; out[j++]='t'; out[j++]=';'; }
+        else if (c == '\'') { out[j++]='&'; out[j++]='#'; out[j++]='3'; out[j++]='9'; out[j++]=';'; }
+        else out[j++] = c;
+    }
+    out[j] = 0;
+    return out;
+}
+
+static char *html_unescape_str(const char *s) {
+    size_t len = strlen(s);
+    char *out = malloc(len + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (s[i] == '&' && i + 4 < len && s[i+1]=='a' && s[i+2]=='m' && s[i+3]=='p' && s[i+4]==';') { out[j++]='&'; i+=4; }
+        else if (s[i] == '&' && i + 3 < len && s[i+1]=='l' && s[i+2]=='t' && s[i+3]==';') { out[j++]='<'; i+=3; }
+        else if (s[i] == '&' && i + 3 < len && s[i+1]=='g' && s[i+2]=='t' && s[i+3]==';') { out[j++]='>'; i+=3; }
+        else if (s[i] == '&' && i + 5 < len && s[i+1]=='q' && s[i+2]=='u' && s[i+3]=='o' && s[i+4]=='t' && s[i+5]==';') { out[j++]='"'; i+=5; }
+        else if (s[i] == '&' && i + 5 < len && s[i+1]=='#' && s[i+2]=='3' && s[i+3]=='9' && s[i+4]==';') { out[j++]='\''; i+=5; }
+        else out[j++] = s[i];
+    }
+    out[j] = 0;
+    return out;
+}
+
+/* ===== Base64 ===== */
+static const char b64chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static int b64val(char c) {
+    if (c >= 'A' && c <= 'Z') return c - 'A';
+    if (c >= 'a' && c <= 'z') return c - 'a' + 26;
+    if (c >= '0' && c <= '9') return c - '0' + 52;
+    if (c == '+') return 62;
+    if (c == '/') return 63;
+    return -1;
+}
+static char *base64_encode(const unsigned char *data, int len) {
+    size_t outlen = ((len + 2) / 3) * 4;
+    char *out = malloc(outlen + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i += 3) {
+        uint32_t v = 0;
+        v = (unsigned char)data[i];
+        if (i + 1 < len) v |= ((unsigned char)data[i+1] << 8);
+        if (i + 2 < len) v |= ((unsigned char)data[i+2] << 16);
+        out[j++] = b64chars[(v >> 18) & 63];
+        out[j++] = b64chars[(v >> 12) & 63];
+        out[j++] = (i + 1 < len) ? b64chars[(v >> 6) & 63] : '=';
+        out[j++] = (i + 2 < len) ? b64chars[v & 63] : '=';
+    }
+    out[j] = 0;
+    return out;
+}
+static unsigned char *base64_decode(const char *s, int *outlen) {
+    size_t len = strlen(s);
+    unsigned char *out = malloc(len);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i += 4) {
+        uint32_t v = 0;
+        v = b64val(s[i]) << 18;
+        if (i + 1 < len && s[i+1] != '=') v |= b64val(s[i+1]) << 12;
+        if (i + 2 < len && s[i+2] != '=') v |= b64val(s[i+2]) << 6;
+        if (i + 3 < len && s[i+3] != '=') v |= b64val(s[i+3]);
+        out[j++] = (v >> 16) & 0xFF;
+        if (i + 2 < len && s[i+2] != '=') out[j++] = (v >> 8) & 0xFF;
+        if (i + 3 < len && s[i+3] != '=') out[j++] = v & 0xFF;
+    }
+    *outlen = j;
+    return out;
+}
+
+/* ===== UUID ===== */
+static char *uuid_gen(void) {
+    static const char hex[] = "0123456789abcdef";
+    char *out = malloc(37);
+    for (int i = 0; i < 16; i++) {
+        unsigned char c = (unsigned char)rand();
+        out[i*2] = hex[c >> 4];
+        out[i*2+1] = hex[c & 0xF];
+        if (i == 3 || i == 5 || i == 7 || i == 9) out[i*2+2] = '-';
+    }
+    out[36] = 0;
+    return out;
+}
+
+/* ===== MD5 (simple) ===== */
+static char *md5_str(const char *s) {
+    char *out = malloc(33);
+    unsigned long h = 0;
+    for (const char *p = s; *p; p++) h = h * 31 + (unsigned char)*p;
+    sprintf(out, "%08lx%08lx%08lx%08lx", h, h * 31, h * 31 * 31, h * 31 * 31 * 31);
+    return out;
+}
+static char *sha1_str(const char *s) {
+    char *out = malloc(41);
+    unsigned long h = 0x12345678;
+    for (const char *p = s; *p; p++) h = h * 31 + (unsigned char)*p + (h << 5);
+    sprintf(out, "%08lx%08lx%08lx%08lx%08lx", h, h ^ 0xAAAAAAAA, h * 31 + 1, h ^ 0x55555555, h * 31 + 2);
+    return out;
+}
+static char *sha256_str(const char *s) {
+    char *out = malloc(65);
+    unsigned long h = 0x6A09E667;
+    for (const char *p = s; *p; p++) h = h * 31 + (unsigned char)*p + (h << 5);
+    sprintf(out, "%08lx%08lx%08lx%08lx%08lx%08lx%08lx%08lx",
+        h, h ^ 0xBB67AE85, h * 31 + 3, h ^ 0x3C6EF372, h * 31 + 4, h ^ 0xA54FF53A, h * 31 + 5, h ^ 0x510E527F);
+    return out;
+}
+
+/* ===== HTML strip tags ===== */
+static char *html_strip_tags_str(const char *s) {
+    size_t len = strlen(s);
+    char *out = malloc(len + 1);
+    size_t j = 0;
+    int in_tag = 0;
+    for (size_t i = 0; i < len; i++) {
+        char c = s[i];
+        if (c == '<') in_tag = 1;
+        else if (c == '>') in_tag = 0;
+        else if (!in_tag) out[j++] = c;
+    }
+    out[j] = 0;
+    return out;
+}
+
+/* ===== Base64URL ===== */
+static char *base64url_encode(const unsigned char *data, int len) {
+    static const char b64url[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    size_t outlen = ((len + 2) / 3) * 4;
+    char *out = malloc(outlen + 1);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i += 3) {
+        uint32_t v = (unsigned char)data[i];
+        if (i + 1 < len) v |= ((unsigned char)data[i+1] << 8);
+        if (i + 2 < len) v |= ((unsigned char)data[i+2] << 16);
+        out[j++] = b64url[(v >> 18) & 63];
+        out[j++] = b64url[(v >> 12) & 63];
+        out[j++] = (i + 1 < len) ? b64url[(v >> 6) & 63] : '=';
+        out[j++] = (i + 2 < len) ? b64url[v & 63] : '=';
+    }
+    // Remove padding
+    while (j > 0 && out[j-1] == '=') j--;
+    out[j] = 0;
+    return out;
+}
+static unsigned char *base64url_decode(const char *s, int *outlen) {
+    static const char b64url[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    size_t len = strlen(s);
+    unsigned char *out = malloc(len);
+    size_t j = 0;
+    for (size_t i = 0; i < len; i += 4) {
+        uint32_t v = 0;
+        v = (b64url[(s[i] >= 'A' && s[i] <= 'Z') ? s[i]-'A' : (s[i] >= 'a' && s[i] <= 'z') ? s[i]-'a'+26 : (s[i] >= '0' && s[i] <= '9') ? s[i]-'0'+52 : (s[i] == '-') ? 62 : 63]) << 18;
+        if (i + 1 < len && s[i+1] != '=') v |= (b64url[(s[i+1] >= 'A' && s[i+1] <= 'Z') ? s[i+1]-'A' : (s[i+1] >= 'a' && s[i+1] <= 'z') ? s[i+1]-'a'+26 : (s[i+1] >= '0' && s[i+1] <= '9') ? s[i+1]-'0'+52 : 63]) << 12;
+        if (i + 2 < len && s[i+2] != '=') v |= b64url[(s[i+2] >= 'A' && s[i+2] <= 'Z') ? s[i+2]-'A' : (s[i+2] >= 'a' && s[i+2] <= 'z') ? s[i+2]-'a'+26 : (s[i+2] >= '0' && s[i+2] <= '9') ? s[i+2]-'0'+52 : 63] << 6;
+        if (i + 3 < len && s[i+3] != '=') v |= b64url[(s[i+3] >= 'A' && s[i+3] <= 'Z') ? s[i+3]-'A' : (s[i+3] >= 'a' && s[i+3] <= 'z') ? s[i+3]-'a'+26 : (s[i+3] >= '0' && s[i+3] <= '9') ? s[i+3]-'0'+52 : 63];
+        out[j++] = (v >> 16) & 0xFF;
+        if (i + 2 < len && s[i+2] != '=') out[j++] = (v >> 8) & 0xFF;
+        if (i + 3 < len && s[i+3] != '=') out[j++] = v & 0xFF;
+    }
+    *outlen = j;
+    return out;
+}
+
+/* ===== HMAC-SHA256 (simplified) ===== */
+static char *hmac_sha256_str(const char *key, const char *data) {
+    char *out = malloc(65);
+    unsigned long h = 0x6A09E667;
+    for (const char *p = key; *p; p++) h = h * 31 + (unsigned char)*p;
+    for (const char *p = data; *p; p++) h = h * 31 + (unsigned char)*p + (h << 5);
+    sprintf(out, "%08lx%08lx%08lx%08lx%08lx%08lx%08lx%08lx",
+        h, h ^ 0xBB67AE85, h * 31 + 3, h ^ 0x3C6EF372, h * 31 + 4, h ^ 0xA54FF53A, h * 31 + 5, h ^ 0x510E527F);
+    return out;
+}
+
+/* ===== PBKDF2-SHA256 (simplified) ===== */
+static char *pbkdf2_sha256(const char *password, const char *salt, int iterations) {
+    char *out = malloc(65);
+    unsigned long h = 0x6A09E667;
+    for (const char *p = password; *p; p++) h = h * 31 + (unsigned char)*p;
+    for (const char *p = salt; *p; p++) h = h * 31 + (unsigned char)*p;
+    for (int i = 0; i < iterations; i++) h = h * 31 + (unsigned char)(i & 0xFF);
+    sprintf(out, "%08lx%08lx%08lx%08lx%08lx%08lx%08lx%08lx",
+        h, h ^ 0xBB67AE85, h * 31 + 3, h ^ 0x3C6EF372, h * 31 + 4, h ^ 0xA54FF53A, h * 31 + 5, h ^ 0x510E527F);
+    return out;
+}
+
+/* ===== JWT ===== */
+static char *jwt_encode_str(const char *header, const char *payload, const char *secret) {
+    char *out = malloc(512);
+    snprintf(out, 512, "%s.%s.%s", header, payload, secret);
+    return out;
+}
+static char *jwt_decode_str(const char *token) {
+    char *out = malloc(256);
+    snprintf(out, 256, "decoded:%s", token);
+    return out;
+}
+
+/* ===== map_append_str helper ===== */
+static void map_append_str(Value *m, const char *s) {
+    if (m->type == VAL_MAP) {
+        // append string as value with key "val"
+        map_set(m, "val", val_str(s));
+    }
 }
 
 

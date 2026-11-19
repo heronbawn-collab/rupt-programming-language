@@ -1,0 +1,448 @@
+# Rupt Language Syntax Highlighting Test Script
+# This file exercises all syntax highlighting features of the Rupt extension
+
+# ============================================================================
+# IMPORTS AND MODULES
+# ============================================================================
+
+import std.math as math
+from std.io import print, visible
+from std.time import sleep_ms, time_now
+
+# ============================================================================
+# TYPES
+# ============================================================================
+
+const MAX_SIZE: Int = 100
+const PI: Float = 3.14159
+const FLAG: Bool = true
+const GREETING: String = "Hello, Rupt!"
+const EMPTY: None = none
+const NUMBERS: List[Int] = [1, 2, 3, 4, 5]
+const COORDS: Tuple[Int, Int] = (10, 20)
+const UNIQUE: Set[String] = {"a", "b", "c"}
+const LOOKUP: Map[String, Int] = {"one": 1, "two": 2}
+
+# ============================================================================
+# ENUMS AND STRUCTS
+# ============================================================================
+
+enum Status {
+    pending,
+    active,
+    completed,
+    failed
+}
+
+struct Point {
+    x: Int
+    y: Int
+}
+
+struct Rectangle {
+    top_left: Point
+    bottom_right: Point
+}
+
+interface Drawable {
+    fn draw(self)
+    fn area(self) -> Float
+}
+
+protocol Serializable {
+    fn serialize(self) -> String
+    fn deserialize(data: String) -> Self
+}
+
+# ============================================================================
+# DECORATORS
+# ============================================================================
+
+@deprecated
+@log_calls
+@retry(3)
+
+def old_function() -> None:
+    pass
+
+# ============================================================================
+# FUNCTION DEFINITIONS
+# ============================================================================
+
+def add(a: Int, b: Int) -> Int:
+    return a + b
+
+def multiply(a: Float, b: Float) -> Float:
+    result: Float = a * b
+    return result
+
+def greet(name: String = "World") -> String:
+    greeting: String = "Hello, " + name + "!"
+    return greeting
+
+async def fetch_data(url: String) -> String:
+    response: String = await http_get(url)
+    return response
+
+# ============================================================================
+# CONTROL FLOW
+# ============================================================================
+
+def classify_number(n: Int) -> String:
+    if n < 0:
+        return "negative"
+    elif n == 0:
+        return "zero"
+    else:
+        return "positive"
+
+def process_items(items: List[Int]) -> None:
+    for item in items:
+        if item % 2 == 0:
+            continue
+        if item > 50:
+            break
+        print(item)
+
+def retry_operation(attempts: Int) -> Bool:
+    count: Int = 0
+    while count < attempts:
+        count = count + 1
+        if try_something():
+            return true
+    return false
+
+# ============================================================================
+# PATTERN MATCHING
+# ============================================================================
+
+def handle_status(status: Status) -> String:
+    match status:
+        case Status.pending:
+            return "Still waiting"
+        case Status.active:
+            return "In progress"
+        case Status.completed:
+            return "Done"
+        case Status.failed:
+            return "Error occurred"
+        case _:
+            return "Unknown status"
+
+# ============================================================================
+# ERROR HANDLING
+# ============================================================================
+
+def safe_divide(a: Float, b: Float) -> Float:
+    try:
+        if b == 0:
+            raise "Division by zero"
+        return a / b
+    except ZeroDivisionError:
+        return 0.0
+    except ValueError as e:
+        print("Value error: " + e.message)
+        return 0.0
+    finally:
+        print("Cleanup complete")
+
+# ============================================================================
+# LAMBDA AND HIGHER-ORDER FUNCTIONS
+# ============================================================================
+
+def apply_operation(values: List[Int], op: Function) -> List[Int]:
+    results: List[Int] = []
+    for v in values:
+        results.append(op(v))
+    return results
+
+square: Function = lambda x: Int => x * x
+double: Function = lambda x: Int => x + x
+
+# ============================================================================
+# CONTEXT MANAGERS
+# ============================================================================
+
+def read_file_safely(path: String) -> String:
+    with open(path, "r") as file:
+        content: String = file.read()
+        return content
+
+# ============================================================================
+# CLASSES AND OBJECTS
+# ============================================================================
+
+class Animal:
+    def __init__(self, name: String) -> None:
+        self.name: String = name
+        self.energy: Int = 100
+
+    def speak(self) -> String:
+        return "Some sound"
+
+    def eat(self, food: String) -> None:
+        self.energy = self.energy + 10
+        print(self.name + " eats " + food)
+
+class Dog(Animal):
+    def __init__(self, name: String, breed: String) -> None:
+        super().__init__(name)
+        self.breed: String = breed
+
+    def speak(self) -> String:
+        return "Woof!"
+
+    def bark(self, times: Int) -> None:
+        for i in range(times):
+            print("Woof!")
+
+# ============================================================================
+# BUILTIN FUNCTIONS USAGE
+# ============================================================================
+
+def demonstrate_builtins() -> None:
+    # Print and visible
+    print("Testing builtins")
+    visible("Visible output")
+
+    # Length and range
+    count: Int = len([1, 2, 3])
+    nums: List[Int] = list(range(0, 10))
+
+    # Type conversion
+    num: Int = int("42")
+    dec: Float = float("3.14")
+    text: String = str(100)
+    flag: Bool = bool(1)
+
+    # Collections
+    total: Int = sum([1, 2, 3, 4, 5])
+    minimum: Int = min([5, 3, 9, 1, 7])
+    maximum: Int = max([5, 3, 9, 1, 7])
+    ordered: List[Int] = sorted([3, 1, 4, 1, 5, 9])
+    backwards: List[Int] = reversed([1, 2, 3])
+
+    # Enumerate and zip
+    for index, value in enumerate(["a", "b", "c"]):
+        print(index, value)
+
+    for name, age in zip(["Alice", "Bob"], [25, 30]):
+        print(name + " is " + str(age))
+
+    # All and any
+    all_positive: Bool = all([1, 2, 3])
+    any_negative: Bool = any([1, -2, 3])
+
+    # Absolute value
+    abs_val: Int = abs(-42)
+
+    # Time and sleep
+    start: Float = time_now()
+    sleep_ms(100)
+    elapsed: Float = time_now() - start
+
+    # File operations
+    if file_exists("test.rupt"):
+        content: String = file_read("test.rupt")
+
+    # Sound and graphics
+    sound_beep()
+    sound_play("alert.wav")
+
+    gfx_init(800, 600)
+    gfx_clear()
+    gfx_color(255, 0, 0)
+    gfx_pixel(100, 100)
+    gfx_line(0, 0, 800, 600)
+    gfx_rect(10, 10, 100, 100)
+    gfx_circle(400, 300, 50)
+    gfx_fill_rect(200, 200, 50, 50)
+    gfx_fill_circle(600, 400, 30)
+    gfx_show()
+    gfx_save("output.png")
+    gfx_close()
+
+# ============================================================================
+# OPERATORS
+# ============================================================================
+
+def demonstrate_operators(a: Int, b: Int) -> None:
+    # Arithmetic
+    sum_val: Int = a + b
+    diff: Int = a - b
+    prod: Int = a * b
+    quot: Float = a / b
+    rem: Int = a % b
+    power: Int = a ** b
+    floor_div: Int = a // b
+
+    # Compound assignment
+    a += 1
+    b -= 1
+    a *= 2
+    b /= 2
+    a %= 3
+
+    # Comparison
+    equal: Bool = a == b
+    not_equal: Bool = a != b
+    less: Bool = a < b
+    greater: Bool = a > b
+    less_eq: Bool = a <= b
+    greater_eq: Bool = a >= b
+
+    # Logical
+    and_result: Bool = true and false
+    or_result: Bool = true or false
+    not_result: Bool = not true
+
+    # Bitwise
+    bit_and: Int = a & b
+    bit_or: Int = a | b
+
+    # Identity and membership
+    is_same: Bool = a is b
+    in_list: Bool = 5 in [1, 2, 3, 4, 5]
+
+    # Arrow / lambda
+    inc: Function = lambda x: Int => x + 1
+
+# ============================================================================
+# STRINGS AND INTERPOLATION
+# ============================================================================
+
+def demonstrate_strings(name: String, age: Int) -> None:
+    # Single quoted
+    single: String = 'Single quoted string'
+
+    # Double quoted
+    double: String = "Double quoted string"
+
+    # Escaped characters
+    escaped: String = "Line 1\nLine 2\tTabbed"
+
+    # String with variables
+    message: String = "Name: " + name + ", Age: " + str(age)
+
+    # Multiline string
+    multi: String = """
+    This is a
+    multiline string
+    """
+
+# ============================================================================
+# NUMBERS
+# ============================================================================
+
+def demonstrate_numbers() -> None:
+    integer: Int = 42
+    negative: Int = -17
+    hex_val: Int = 0xFF
+    decimal: Float = 3.14159
+    sci_notation: Float = 1.5e-10
+    big_num: Int = 1000000
+
+# ============================================================================
+# ASSERTIONS AND TESTING
+# ============================================================================
+
+def run_tests() -> None:
+    assert add(2, 3) == 5
+    assert multiply(2.0, 3.0) == 6.0
+    assert classify_number(-5) == "negative"
+    assert classify_number(0) == "zero"
+    assert classify_number(42) == "positive"
+    assert len([1, 2, 3]) == 3
+    assert abs(-10) == 10
+
+    test "basic arithmetic":
+        assert 1 + 1 == 2
+        assert 2 * 3 == 6
+
+    test "string operations":
+        assert "hello" + " world" == "hello world"
+        assert len("hello") == 5
+
+# ============================================================================
+# GENERATORS AND YIELD
+# ============================================================================
+
+def count_up_to(n: Int):
+    i: Int = 0
+    while i < n:
+        yield i
+        i = i + 1
+
+# ============================================================================
+# GLOBAL AND NONLOCAL
+# ============================================================================
+
+counter: Int = 0
+
+def increment_counter() -> None:
+    global counter
+    counter = counter + 1
+
+def outer() -> Function:
+    count: Int = 0
+
+    def inner() -> Int:
+        nonlocal count
+        count = count + 1
+        return count
+
+    return inner
+
+# ============================================================================
+# ENTRY POINT
+# ============================================================================
+
+def main() -> None:
+    print("=== Rupt Syntax Highlighting Test ===")
+
+    # Types and variables
+    x: Int = 42
+    y: Float = 3.14
+    flag: Bool = true
+    msg: String = "test"
+    nothing: None = none
+
+    # Functions
+    result: Int = add(10, 20)
+    print(result)
+
+    # Control flow
+    status: String = classify_number(x)
+    print(status)
+
+    # Pattern matching
+    match_status: String = handle_status(Status.active)
+    print(match_status)
+
+    # Classes
+    dog: Dog = Dog("Rex", "Labrador")
+    print(dog.speak())
+    dog.bark(3)
+
+    # Builtins
+    demonstrate_builtins()
+
+    # Operators
+    demonstrate_operators(10, 3)
+
+    # Strings
+    demonstrate_strings("Alice", 30)
+
+    # Numbers
+    demonstrate_numbers()
+
+    # Tests
+    run_tests()
+
+    # Generators
+    for val in count_up_to(5):
+        print(val)
+
+    print("=== Test Complete ===")
+
+main()

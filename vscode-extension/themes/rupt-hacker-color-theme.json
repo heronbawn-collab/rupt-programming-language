@@ -1,0 +1,80 @@
+{
+  "name": "Rupt Hacker",
+  "tokenColors": [
+    {
+      "scope": "comment",
+      "settings": {
+        "foreground": "#00FF00",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "string",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "string.escape",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "string.interpolated",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "constant.numeric",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "keyword.control",
+      "settings": {
+        "foreground": "#00FF00",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "keyword.other",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "keyword.operator",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "entity.name.type",
+      "settings": {
+        "foreground": "#00FF00",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "keyword.other.decorator",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "punctuation",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    },
+    {
+      "scope": "variable.other",
+      "settings": {
+        "foreground": "#00FF00"
+      }
+    }
+  ]
+}

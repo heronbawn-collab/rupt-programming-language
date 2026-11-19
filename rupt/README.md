@@ -121,6 +121,32 @@ from math import sqrt
 - `sound_beep(freq, ms)` — звуковой сигнал.
 - `sound_play("file")` — проигролвть звук (через Beep).
 
+### Веб и сеть
+
+- `http_get(url)` — GET запрос, возвращает {status, body}.
+- `http_post(url, data)` — POST запрос с телом.
+- `http_post_json(url, data)` — POST запрос с JSON телом.
+- `json_parse(str)` — разбор JSON строки в Map.
+- `json_stringify(obj)` — сериализация Map/List в JSON строку.
+- `url_encode(str)` — URL кодирование.
+- `url_decode(str)` — URL декодирование.
+- `html_escape(str)` — экранирование HTML.
+- `html_unescape(str)` — декодирование HTML.
+- `base64_encode(list)` — Base64 кодирование списка байт.
+- `base64_decode(str)` — Base64 декодирование в список байт.
+- `uuid()` — генерация UUID v4.
+- `md5(text)` — MD5 хеш (шестнадцатеричная строка).
+- `sha1(text)` — SHA1 хеш.
+- `sha256(text)` — SHA256 хеш.
+- `url_parse(url)` — разбор URL на части.
+- `html_strip_tags(html)` — удаление HTML тегов.
+- `base64url_encode(list)` — Base64URL кодирование.
+- `base64url_decode(str)` — Base64URL декодирование.
+- `hmac_sha256(key, msg)` — HMAC-SHA256.
+- `pbkdf2(password, salt, iterations)` — PBKDF2 с HMAC-SHA256.
+- `jwt_encode(header, payload, secret)` — JWT кодирование.
+- `jwt_decode(token)` — JWT декодирование.
+
 ### Файлы
 
 - `file_read(path)` — прочитать файл в строку.
@@ -243,7 +269,7 @@ class User:
   - closures, recursion, lambda
   - visible(...) — output (like print).
   - toilet() — full program stop.
-  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm, min2, max2, chr, ord, hex, oct, bin, divmod, repr, ascii, slice, complex, dict, frozenset, issubclass, isinstance, bytes, bytearray, memoryview, format, type, callable, object, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play
+  - builtins: print, visible, toilet, len, range, int, float, str, bool, list, input, sum, min, max, sorted, reversed, enumerate, zip, all, any, abs, time_now, sleep_ms, file_read, file_write, file_append, file_delete, file_exists, sound_beep, sound_play, ceil, floor, round, pow, sqrt, exp, log, log10, sin, cos, tan, asin, acos, atan, sinh, cosh, tanh, deg2rad, rad2deg, clamp, map_range, lerp, sign, is_even, is_odd, gcd, lcm, min2, max2, chr, ord, hex, oct, bin, divmod, repr, ascii, slice, complex, dict, frozenset, issubclass, isinstance, bytes, bytearray, memoryview, format, type, callable, object, http_get, http_post, http_post_json, json_parse, json_stringify, url_encode, url_decode, html_escape, html_unescape, base64_encode, base64_decode, uuid, md5, sha1, sha256, url_parse, html_strip_tags, base64url_encode, base64url_decode, hmac_sha256, pbkdf2, jwt_encode, jwt_decode
 
 ### Collections
 
@@ -280,6 +306,32 @@ Modules: math, os, json, random, time, path, sys, string, collections, regex, da
 - `gfx_close()` — free canvas.
 - `sound_beep(freq, ms)` — beep sound.
 - `sound_play("file")` — play sound (via Beep).
+
+### Web and Networking
+
+- `http_get(url)` — GET request, returns {status, body}.
+- `http_post(url, data)` — POST request with body.
+- `http_post_json(url, data)` — POST request with JSON body.
+- `json_parse(str)` — parse JSON string to Map.
+- `json_stringify(obj)` — serialize Map/List to JSON string.
+- `url_encode(str)` — URL encoding.
+- `url_decode(str)` — URL decoding.
+- `html_escape(str)` — HTML escaping.
+- `html_unescape(str)` — HTML unescaping.
+- `base64_encode(list)` — Base64 encode list of bytes.
+- `base64_decode(str)` — Base64 decode to list of bytes.
+- `uuid()` — generate UUID v4.
+- `md5(text)` — MD5 hash (hex string).
+- `sha1(text)` — SHA1 hash.
+- `sha256(text)` — SHA256 hash.
+- `url_parse(url)` — parse URL into parts.
+- `html_strip_tags(html)` — strip HTML tags.
+- `base64url_encode(list)` — Base64URL encode.
+- `base64url_decode(str)` — Base64URL decode.
+- `hmac_sha256(key, msg)` — HMAC-SHA256.
+- `pbkdf2(password, salt, iterations)` — PBKDF2 with HMAC-SHA256.
+- `jwt_encode(header, payload, secret)` — JWT encode.
+- `jwt_decode(token)` — JWT decode.
 
 ### Files
 

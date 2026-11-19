@@ -1,0 +1,80 @@
+{
+  "name": "Rupt Very Dark",
+  "tokenColors": [
+    {
+      "scope": "comment",
+      "settings": {
+        "foreground": "#555555",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "string",
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": "string.escape",
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": "string.interpolated",
+      "settings": {
+        "foreground": "#CE9178"
+      }
+    },
+    {
+      "scope": "constant.numeric",
+      "settings": {
+        "foreground": "#B5CEA8"
+      }
+    },
+    {
+      "scope": "keyword.control",
+      "settings": {
+        "foreground": "#C586C0",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "scope": "keyword.other",
+      "settings": {
+        "foreground": "#569CD6"
+      }
+    },
+    {
+      "scope": "keyword.operator",
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": "entity.name.type",
+      "settings": {
+        "foreground": "#4EC9B0",
+        "fontStyle": "italic"
+      }
+    },
+    {
+      "scope": "keyword.other.decorator",
+      "settings": {
+        "foreground": "#C586C0"
+      }
+    },
+    {
+      "scope": "punctuation",
+      "settings": {
+        "foreground": "#D4D4D4"
+      }
+    },
+    {
+      "scope": "variable.other",
+      "settings": {
+        "foreground": "#9CDCFE"
+      }
+    }
+  ]
+}
